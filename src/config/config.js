@@ -8,8 +8,4 @@ let db = new sqlite.Database(dbPath,sqlite.OPEN_READWRITE,(err)=>{
         console.log('Connected sqlite success')
 })
 
-/*db.close((err)=>{
-        if(err) return console.log(err.message)
-        console.log("close db success")
-})*/
 module.exports = db

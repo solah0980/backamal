@@ -11,8 +11,6 @@ module.exports =  (app)=>{
     app.post('/showamal',MyAmal.showAmal)
 
     app.get('/test',(req,res)=>{
-        db.get(`SELECT name,point FROM pray WHERE amalId = 22`, (err, result) => {
-            console.log(result)
-        })
+        console.log('test pass')
     })
 }
