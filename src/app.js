@@ -13,4 +13,5 @@ require('./route')(app)
 
 app.listen(port,(req,res)=>{
     console.log(`server open success ${port}`)
+    console.log("let's go")
 })
