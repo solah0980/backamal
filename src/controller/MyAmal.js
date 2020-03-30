@@ -1,4 +1,4 @@
-const con = require('../config/config')
+const db = require('../config/config')
 const dateFormat = require('dateformat');
 const now = new Date();
 const da = dateFormat(now, "mediumDate");
@@ -9,27 +9,21 @@ let dataSuccess = [] //ตัวแปรไว้เก็บข้อมูล
 
 //เพิ่มข้อมูล ละหมาด,ละหมาดซุนนะ,อีบาดัร
 async function addData(id, pray, praysunnah, ebadat) {
-    let p1 = new Promise((resove,reject)=>{
         for (let i = 0; i < 5; i++) {
-             con.query(`INSERT INTO pray(amalId,name,point) VALUES("${id}","${pray[i].name}",${parseInt(pray[i].point)})`, (err, result) => {})
+             db.run(`INSERT INTO pray(amalId,name,point) VALUES("${id}","${pray[i].name}",${parseInt(pray[i].point)})`, (err, result) => {})
         } 
-    },1000)
-    
-    let p2 = new Promise((resove,reject)=>{
+ 
          for (let i = 0; i < 3; i++) {
-        con.query(`INSERT INTO praysunnah(amalId,name,point) VALUES("${id}","${praysunnah[i].name}",
+        db.run(`INSERT INTO praysunnah(amalId,name,point) VALUES("${id}","${praysunnah[i].name}",
              ${parseInt(praysunnah[i].point)})`, (err, result) => {})
     }
-    },1000)
-
-    let p3 =new Promise((resove,reject)=>{
+   
        for (let i = 0; i < 6; i++) {
-           con.query(`INSERT INTO ebadat(amalId,name,point) VALUES("${id}","${ebadat[i].name}",
+           db.run(`INSERT INTO ebadat(amalId,name,point) VALUES("${id}","${ebadat[i].name}",
              ${parseInt(ebadat[i].point)})`, (err, result) => {})
        }
-   },1000)
+       
     
-   p1.then(()=>p2.then(()=>p3)).catch((err)=>console.log(err))
 }
 
 //คำนวนเปอร์เซ็นการ ละหมาด,ละหมาดซุนนะฮ์,อีบาดัร
@@ -56,14 +50,14 @@ function CalculateData(name, data, max) {
 function queryData(name, table, sum, type, res,th, f, l) {
     //มีอยู่สองเงื่อนไข ถ้า type == 1 คือมีข้อมูลเดี่ยวทำเงื่อนไขแรก //ถ้า type ==2 มีข้อมูลหลายแถวทำแถวที่2
     if (type == 0) {
-        con.query(`SELECT name,point FROM ${table} WHERE amalId = ${f.amalId}`, (err, result) => {
+        db.get(`SELECT name,point FROM ${table} WHERE amalId = ${f.amalId}`, (err, result) => {
             CalculateData(name, JSON.parse(JSON.stringify(result)), sum)
             dataSuccess.push(th)
             res.send(dataSuccess)
             dataSuccess = []
         })
     } else if (type == 1) {
-        con.query(`SELECT name,point FROM ${table} WHERE amalId BETWEEN ${f.amalId} AND ${l.amalId}`, (err, result) => {
+        db.get(`SELECT name,point FROM ${table} WHERE amalId BETWEEN ${f.amalId} AND ${l.amalId}`, (err, result) => {
             CalculateData(name, JSON.parse(JSON.stringify(result)), sum)
             dataSuccess.push(th)
             res.send(dataSuccess)
@@ -78,8 +72,10 @@ module.exports = {
     //บันทึกอามัลลงในฐานข้อมูล
     async saveAmal(req, res) {
         try {
-            con.query(`INSERT INTO myamal(studentId,date) VALUES("${req.body.stdId}","${da}")`, (err, result) => {
-                addData(result.insertId, req.body.pray, req.body.praysunnah, req.body.ebadat)
+            console.log(req.body)
+            db.run(`INSERT INTO myamal(studentId,date) VALUES("${req.body.stdId}","${da}")`, (err) => {
+                if(err)return console.log(err.message)
+                addData(req.body.stdId, req.body.pray, req.body.praysunnah, req.body.ebadat)
                 res.send("Success")
             })
         } catch (err) {
@@ -90,8 +86,9 @@ module.exports = {
     //ส่งข้อมูลอีบาดัรไปให้ user
     async showAmal(req, res) {
         try {
-            con.query(`SELECT amalId FROM myamal WHERE studentId = ${req.body.stdId} AND date LIKE "${req.body.month}%"`, (err, result) => {
-
+            console.log(req.body)
+            db.get(`SELECT amalId FROM myamal WHERE studentId = ${req.body.stdId} AND date LIKE "${req.body.month}%"`, (err, result) => {
+                console.log(result)
                 if (Object.keys(result).length === 0) {
                     return res.send({
                         error: "ไม่เจอข้อมูล"

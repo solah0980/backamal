@@ -1,10 +1,13 @@
-const sql = require('mysql')
-
-const con = sql.createConnection({
-        host: 'us-cdbr-iron-east-01.cleardb.net',
-        user: 'b66fc7e737a9b8',
-        password: 'cdd4b129',
-        database: 'heroku_affeff97f86f978',
+const sqlite = require('sqlite3').verbose()
+let db = new sqlite.Database('../myapp.sqlite',sqlite.OPEN_READWRITE,(err)=>{
+        if(err){
+                return console.log(err.message)
+        }
+        console.log('Connected sqlite success')
 })
 
-module.exports = con
+/*db.close((err)=>{
+        if(err) return console.log(err.message)
+        console.log("close db success")
+})*/
+module.exports = db
