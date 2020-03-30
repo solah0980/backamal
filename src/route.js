@@ -11,6 +11,6 @@ module.exports =  (app)=>{
     app.post('/showamal',MyAmal.showAmal)
 
     app.get('/test',(req,res)=>{
-        console.log('test pass')
+        res.send("test api")
     })
 }
