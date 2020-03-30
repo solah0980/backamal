@@ -8,17 +8,16 @@ function getToken(user){
 module.exports={
     Login(req,res){
         let{email,password}=req.body
-        
+        console.log(req.body)
         try{
              db.get(`SELECT * FROM student WHERE email = "${email}"`,(err,result)=>{
-                if(err){
+                if(result==undefined){
                     return res.send({error:"อีเมล์ไม่ถูกต้อง"})
                 }
                 enpass = bcrypt.compareSync(password,result.password)
                 if(!enpass){
                     return res.send({error:"รหัสผ่านไม่ถูกต้อง"})
                 }
-                console.log(result)
                 res.send({
                     user:result,
                     token:getToken(result)
