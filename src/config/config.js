@@ -1,5 +1,7 @@
 const sqlite = require('sqlite3').verbose()
-let db = new sqlite.Database('../myapp.sqlite',sqlite.OPEN_READWRITE,(err)=>{
+const path = require('path')
+const dbPath = path.resolve(__dirname, 'myapp.sqlite')
+let db = new sqlite.Database(dbPath,sqlite.OPEN_READWRITE,(err)=>{
         if(err){
                 return console.log(err.message)
         }

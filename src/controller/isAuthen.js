@@ -18,6 +18,7 @@ module.exports={
                 if(!enpass){
                     return res.send({error:"รหัสผ่านไม่ถูกต้อง"})
                 }
+                console.log(result)
                 res.send({
                     user:result,
                     token:getToken(result)

@@ -11,8 +11,7 @@ module.exports =  (app)=>{
     app.post('/showamal',MyAmal.showAmal)
 
     app.get('/test',(req,res)=>{
-        db.all(`SELECT * FROM myamal WHERE studentId = 8 AND date LIKE "Mar%"`,(err,result)=>{
-            if(err) return console.log(err.message)
+        db.get(`SELECT name,point FROM pray WHERE amalId = 22`, (err, result) => {
             console.log(result)
         })
     })
