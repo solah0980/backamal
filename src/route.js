@@ -2,7 +2,7 @@ const db = require('./config/config')
 const Student = require('./controller/Student')
 const isAuthen = require('./controller/isAuthen')
 const MyAmal = require('./controller/MyAmal')
-let bcrypt = require('bcrypt')
+/* let bcrypt = require('bcrypt') */
 module.exports =  (app)=>{
     app.post('/student/register',Student.Register)
     app.get('/student/:stdId',Student.Show)
