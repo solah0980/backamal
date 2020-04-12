@@ -1,10 +1,10 @@
 const db = require('../config/config')
-let bcrypt = require('bcrypt')
+/* let bcrypt = require('bcrypt') */
 module.exports = {
     Register(req,res){
         let{email,password,name,lastname,stdclass,sex,type}=req.body
         console.log(req)
-        password = bcrypt.hashSync(password,10)
+        /* password = bcrypt.hashSync(password,10) */
         try{
             db.run(`INSERT INTO student(email,password,name,lastname,stdclass,sex,type)
             VALUES("${email}","${password}","${name}","${lastname}"

@@ -1,4 +1,4 @@
-const db = require('../config/config')
+/* const db = require('../config/config')
 let bcrypt =require('bcrypt')
 let jwt = require('jsonwebtoken')
 
@@ -29,4 +29,4 @@ module.exports={
         }
        
     }
-}
+} */
